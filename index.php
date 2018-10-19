@@ -44,6 +44,7 @@
                 } else {
 
                 //creation of table
+
                   $json = file_get_contents($_FILES['fichier']['tmp_name']);
                   $parsejson = json_decode($json, true);
                   
@@ -58,10 +59,30 @@
                   echo '</tr></thead><tbody>';
 
                   foreach($parsejson as $i => $value){
-                        echo '<tr><th scope="row">' . $i . '</th><td>' . $parsejson[$i]['id'] . '</td><td>' . $parsejson[$i]['titre'] 
-                        . '</td><td>' . $parsejson[$i]['type'] . '</td><td>' . $parsejson[$i]['format'] 
-                        . '</td><td>' . $parsejson[$i]['technique'] . '</td><td>' . $parsejson[$i]['prix'] 
-                        . '</td><td>' . $parsejson[$i]['misc'] . '</td></th></tr>';
+                    
+                    echo '<tr><th scope="row">';
+                    echo '<form method="POST" action="/">';
+                    
+                    //NEXT DEV STEP = a function to sort the element triggered by a change on the order of one element of the list
+
+                    echo '<select name="orderValueForElem"' . $i . '" id="orderValueForElem"' . $i . '" onchange="console.log(\'coucou maman\');">';
+                    //select the actual order of the element in the input
+
+                    foreach($parsejson as $k => $value){
+                    
+                      if($i==$k){
+                        echo '<option value="' . $k . '" "selected">' . $k;
+                      } else {
+                        echo '<option value="' . $k . '">' . $k;
+                      }
+                      
+                    } 
+
+                    echo '</select></form></th>';
+                    
+                    foreach($parsejson[$i] as $j => $value){
+                      echo '<td>' . $parsejson[$i][$j] . '</td>';
+                    }
                   }
 
                   echo '</tr></tbody></table>';
@@ -71,7 +92,6 @@
               
               <?php
 
-              echo "new branch changeorder";
 
               /* infos for dev
               echo '<br /> CONTENU DE POST <br />'; 
@@ -83,4 +103,3 @@
               ?>
     </body>
 </html>
-
