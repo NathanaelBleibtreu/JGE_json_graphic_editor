@@ -4,6 +4,10 @@
      
     // On écrase le tableau de session
     $_SESSION = array();
+
+    $jsonCopyFile = fopen('jsonCopyFile.json', 'w+');
+    fwrite($jsonCopyFile, "");
+    fclose($jsonCopyFile);
      
     // On détruit la session
     session_destroy();

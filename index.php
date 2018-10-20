@@ -20,13 +20,14 @@ if(isset($_FILES['fichier'])) {
 
   copy($_FILES['fichier']['tmp_name'], $jsonCopyFilePath);
   
+  $jsonCopyFile = file_get_contents($jsonCopyFilePath);
+  $parsejson = json_decode($jsonCopyFile, true);
   }
 
 // préparation du fichier pour l'interface
 
-  $jsonCopyFile = file_get_contents($jsonCopyFilePath);
-  $parsejson = json_decode($jsonCopyFile, true);
-  
+$jsonCopyFile = file_get_contents('jsonCopyFile.json');
+$parsejson = json_decode($jsonCopyFile, true);
 
 
 
@@ -34,9 +35,9 @@ if(isset($_FILES['fichier'])) {
 
 <!doctype html>
 <html>
-<head>
-        <meta charset="UTF-8">
-        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+  <head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
     </head>
     <body>
       <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
@@ -59,78 +60,78 @@ if(isset($_FILES['fichier'])) {
             <input type="hidden" name="MAX_FILE_SIZE" value="12345" />
           </form>  
         </div>
-      </nav>
+</nav>
 
-              <?php
-
-
+            <?php
 
 
 
-                  //creation of table
 
-                    
-                    
-                    echo '<table class="table table-stripes"><thead><tr><th schope="col"></th>'; 
 
-                    $headerList = array_keys($parsejson[1]);
+                //creation of table
 
-                    foreach($headerList as $i => $value){
-                        echo '<th schope="col">' . $value . '</th>';
-                    }
+                  
+                  
+                  echo '<table class="table table-stripes"><thead><tr><th schope="col"></th>'; 
 
-                    echo '</tr></thead><tbody>';
+                  $headerList = array_keys($parsejson[1]);
 
-                    foreach($parsejson as $i => $value){
-                      
-                      echo '<tr><th scope="row">';
-                      echo '<form method="POST" id="orderValueForElem' . $i . '" action="/JGE/modifyjsonfile.php">';
-                      
-                      // incremented $i helps to sort out thingsfor the sorting function in modifyjsonfile.php
-
-                      $inc = $i + 1;
-
-                      // changing order triggers submit whick triggers the function in modifyjsonfile.php
-
-                      echo '<select name="orderValueForElem' . $inc . '" onchange="submit()";">';
-
-                      //select the actual order of the element in the input
-
-                      foreach($parsejson as $k => $value){
-                      
-                        if($i==$k){
-                          echo '<option value="' . ($k+1) . '" selected="selected">' . ($k+1);
-                        } else {
-                          echo '<option value="' . ($k+1) . '">' . ($k+1);
-                        }
-                        
-                      } 
-
-                      echo '</select></form></th>';
-                      
-                      foreach($parsejson[$i] as $j => $value){
-                        echo '<td>' . $parsejson[$i][$j] . '</td>';
-                      }
-                    // } isset session
-
+                  foreach($headerList as $i => $value){
+                      echo '<th schope="col">' . $value . '</th>';
                   }
-                  echo '</tr></tbody></table>';
 
-              
-       
+                  echo '</tr></thead><tbody>';
+
+                  foreach($parsejson as $i => $value){
+                    
+                    echo '<tr><th scope="row">';
+                    echo '<form method="POST" id="orderValueForElem' . $i . '" action="/JGE/modifyjsonfile.php">';
+                    
+                    // incremented $i helps to sort out thingsfor the sorting function in modifyjsonfile.php
+
+                    $inc = $i + 1;
+
+                    // changing order triggers submit whick triggers the function in modifyjsonfile.php
+
+                    echo '<select name="orderValueForElem' . $inc . '" onchange="submit()";">';
+
+                    //select the actual order of the element in the input
+
+                    foreach($parsejson as $k => $value){
+                    
+                      if($i==$k){
+                        echo '<option value="' . ($k+1) . '" selected="selected">' . ($k+1);
+                      } else {
+                        echo '<option value="' . ($k+1) . '">' . ($k+1);
+                      }
+                      
+                    } 
+
+                    echo '</select></form></th>';
+                    
+                    foreach($parsejson[$i] as $j => $value){
+                      echo '<td>' . $parsejson[$i][$j] . '</td>';
+                    }
+                  // } isset session
+
+                }
+                echo '</tr></tbody></table>';
+
+            
+      
 
 
-              echo "infos for dev";
-              echo '<br /> CONTENU DE SESSION <br /><pre>'; 
-              var_dump($_SESSION); 
-              echo '</pre><br /> CONTENU DE POST <br /><pre>'; 
-              var_dump($_POST); 
-              echo '</pre><br /> CONTENU DE FILES : TYPE <br /><pre>';
-              var_dump($_FILES); 
-              echo '</pre><br><a href="logout.php">DETRUIRE SESSION</a>';
+            echo "infos for dev";
+            echo '<br /> CONTENU DE SESSION <br /><pre>'; 
+            var_dump($_SESSION); 
+            echo '</pre><br /> CONTENU DE POST <br /><pre>'; 
+            var_dump($_POST); 
+            echo '</pre><br /> CONTENU DE FILES : TYPE <br /><pre>';
+            var_dump($_FILES); 
+            echo '</pre><br><a href="logout.php">DETRUIRE SESSION</a>';
 
-              ?>
+            ?>
 
-          
-    </body>
+        
+  </body>
 </html>
